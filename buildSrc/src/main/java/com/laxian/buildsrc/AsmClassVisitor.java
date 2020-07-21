@@ -23,11 +23,12 @@ public class AsmClassVisitor extends ClassVisitor {
 
     @Override
     public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
-        if (name.equals("onResume")) {
-            MethodVisitor methodVisitor = super.visitMethod(access, name, desc, signature, exceptions);
-            return new AsmMethodVisitor(ASM5, methodVisitor, access, name, desc);
-        }
-        return super.visitMethod(access, name, desc, signature, exceptions);
+//        if (name.equals("onResume")) {
+//            MethodVisitor methodVisitor = super.visitMethod(access, name, desc, signature, exceptions);
+//            return new AsmMethodVisitor(ASM5, methodVisitor, access, name, desc);
+//        }
+        MethodVisitor methodVisitor = super.visitMethod(access, name, desc, signature, exceptions);
+        return new LogMethodVisitor(ASM5, methodVisitor, access, name, desc);
     }
 
     public static byte[] modify(File f) throws Exception {

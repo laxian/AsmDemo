@@ -37,8 +37,15 @@ public class MainFragment extends Fragment {
         // TODO: Use the ViewModel
     }
 
+    @Logit(level = Log.VERBOSE)
     @Override
     public void onResume() {
         super.onResume();
+    }
+
+    @Logit(level = Log.DEBUG)
+    @Override
+    public void onStop() {
+        super.onStop();
     }
 }

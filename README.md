@@ -1,12 +1,15 @@
-# ASM 修改字节码最简demo
+# ASM修改字节码最简demo
 
+ASM 是一个字节码修改框架，配合gradle transform API，可以在编译时动态的在class文件中修改代码
+demo 针对MainFragment中@Logit注解的方法，自动添加时间统计，并Log输出
 
-1. 新建或打开Android项目
-2. 新建java library module，名字固定**buildSrc**
+#### 1. 新建或打开gradle项目
+
+#### 2. 新建java library module，名字固定**buildSrc**
 
 buildSrc是编写gradle插件的固定名称
 
-3. 修改buildSrc module的build.gradle
+#### 3. 修改buildSrc module的build.gradle
 ```gradle
 apply plugin: 'groovy'
 
@@ -22,7 +25,7 @@ dependencies {
     implementation 'org.ow2.asm:asm-all:5.2'
 }
 ```
-4. 编写plugin实现类，jvm语言都可以，推荐groovy语言
+#### 4. 编写plugin实现类，jvm语言都可以，推荐groovy语言
 ```java
 public class MyPlugin implements Plugin<Project> {
     @Override
@@ -35,7 +38,7 @@ public class MyPlugin implements Plugin<Project> {
 }
 ```
 
-5. 编写transform 实现类
+#### 5. 编写transform 实现类
 ```java
 class AsmTransform extends Transform {
 ...
@@ -61,7 +64,7 @@ class AsmTransform extends Transform {
                 String jarName = jarInput.getName();
                 String md5Name = DigestUtils.md5Hex(jarInput.getFile().getAbsolutePath());
                 if (jarName.endsWith(".jar")) {
-                    jarName = jarName.substring(0, jarName.length() - 4);
+                    jarName = jarName.substring(#### 0, jarName.length() - 4);
                 }
                 File dest = transformInvocation.getOutputProvider().getContentLocation(jarName + md5Name,
                         jarInput.getContentTypes(), jarInput.getScopes(), Format.JAR);
@@ -103,7 +106,7 @@ class AsmTransform extends Transform {
     }
 ...    
 ```
-6. 针对特定的类，修改字节码
+#### 6. 针对特定的类，修改字节码
 
 上述代码中，`if (f.getPath().contains("MainFragment")) {`针对MainFragment进行修改。
 ASM修改的是字节码，语法相对难懂。使用`ASM Bytecode outline`插件，可以快速生成ASM操作代码.
@@ -117,29 +120,65 @@ ASM修改的是字节码，语法相对难懂。使用`ASM Bytecode outline`插�
     public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
         if (name.equals("onResume")) {
             MethodVisitor methodVisitor = super.visitMethod(access, name, desc, signature, exceptions);
-            return new AsmMethodVisitor(ASM5, methodVisitor, access, name, desc);
+            return new AsmMethodVisitor(ASM#### 5, methodVisitor, access, name, desc);
         }
         return super.visitMethod(access, name, desc, signature, exceptions);
     }
-// AsmMethodVisitor.java    
+// LogMethodVisitor.java    
+
+    private static final String ANNOTATION_SIGNATURE = "Lcom/laxian/zwxdemo/ui/main/Logit";
+    private boolean isInsert;
+    
     @Override
-    public void visitInsn(int opcode) {
-        if(opcode == Opcodes.RETURN){
-            // 插入System.out(this is a modify method!);
-            mv.visitFieldInsn(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
-            mv.visitLdcInsn("this is a modify method!");
-            mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V", false);
-            // 插入Log.d("MainFragment", "onResume");
-            mv.visitLdcInsn("MainFragment");
-            mv.visitLdcInsn("onResume2");
-            mv.visitMethodInsn(INVOKESTATIC, "android/util/Log", "d", "(Ljava/lang/String;Ljava/lang/String;)I", false);
+    protected void onMethodEnter() {
+        Label l0 = new Label();
+        mv.visitLabel(l0);
+        mv.visitLineNumber(7, l0);
+        mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "currentTimeMillis", "()J", false);
+        mv.visitVarInsn(LSTORE, 1);
+        super.onMethodEnter();
+        System.out.println(TAG + "onMethodEnter");
+    }
+
+    @Override
+    protected void onMethodExit(int opcode) {
+        Label l1 = new Label();
+        mv.visitLabel(l1);
+        mv.visitLineNumber(8, l1);
+        mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "currentTimeMillis", "()J", false);
+        mv.visitVarInsn(LSTORE, 3);
+        Label l2 = new Label();
+        mv.visitLabel(l2);
+        mv.visitLineNumber(9, l2);
+        mv.visitLdcInsn("TIME_COST");
+        mv.visitTypeInsn(NEW, "java/lang/StringBuilder");
+        mv.visitInsn(DUP);
+        mv.visitMethodInsn(INVOKESPECIAL, "java/lang/StringBuilder", "<init>", "()V", false);
+        mv.visitLdcInsn("");
+        mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(Ljava/lang/String;)Ljava/lang/StringBuilder;", false);
+        mv.visitVarInsn(LLOAD, 3);
+        mv.visitVarInsn(LLOAD, 1);
+        mv.visitInsn(LSUB);
+        mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(J)Ljava/lang/StringBuilder;", false);
+        mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "toString", "()Ljava/lang/String;", false);
+        mv.visitMethodInsn(INVOKESTATIC, "android/util/Log", "d", "(Ljava/lang/String;Ljava/lang/String;)I", false);
+        mv.visitInsn(POP);
+        super.onMethodExit(opcode);
+        System.out.println(TAG + "onMethodExit" + opcode);
+    }
+
+    @Override
+    public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
+        if (ANNOTATION_SIGNATURE.equals(desc)) {
+            isInsert = true;
         }
-        super.visitInsn(opcode);
+        System.out.println(TAG + "visitAnnotation" + desc + visible);
+        return super.visitAnnotation(desc, visible);
     }
 ```
 
 
-7. 设置plugin
+#### 7. 设置plugin
 
 plugin 命名：`XXX`，如下路径，创建一个 `XXX.properties`
 如下：plugin的名字就是`com.laxian.demo-plugin`
@@ -150,13 +189,13 @@ buildSrc/src/main/resources
         └── com.laxian.demo-plugin.properties
 ```
 
-8. 应用plugin
+#### 8. 应用plugin
 
 `apply plugin: 'com.laxian.demo-plugin'`
 
-9. build
+#### 9. build
 
-10. 验证
+#### 10. 验证
 `<your_module>/build/intermediates/transforms/AsmTransform/debug/0/<path.to.your.class>`
 找到class，双击在studio中查看
 ![verify](./images/verify.png)
