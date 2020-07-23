@@ -1,4 +1,4 @@
-package com.laxian.zwxdemo;
+package com.laxian.asmdemo;
 
 import android.content.Context;
 
@@ -22,6 +22,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
-        assertEquals("com.laxian.zwxdemo", appContext.getPackageName());
+        assertEquals("com.laxian.asmdemo", appContext.getPackageName());
     }
 }

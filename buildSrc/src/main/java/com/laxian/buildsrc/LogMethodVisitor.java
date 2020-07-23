@@ -18,7 +18,7 @@ public class LogMethodVisitor extends AdviceAdapter {
     @Override
     public void visitCode() {
         super.visitCode();
-        System.out.println(TAG + "visitCode");
+        System.out.println(TAG + "visitCode" + this.methodDesc + this.firstLocal + this.methodAccess + this.methodAccess + this.nextLocal + this.mv.toString());
     }
 
     @Override
@@ -111,7 +111,7 @@ public class LogMethodVisitor extends AdviceAdapter {
         System.out.println(TAG + "visitTryCatchBlock");
     }
 
-    private static final String ANNOTATION_SIGNATURE = "Lcom/laxian/zwxdemo/ui/main/Logit;";
+    private static final String ANNOTATION_SIGNATURE = "Lcom/laxian/asmdemo/ui/main/Logit;";
     private int level;
     private boolean isInsert;
 

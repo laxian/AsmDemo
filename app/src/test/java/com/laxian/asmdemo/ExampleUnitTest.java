@@ -1,4 +1,4 @@
-package com.laxian.zwxdemo;
+package com.laxian.asmdemo;
 
 import org.junit.Test;
 

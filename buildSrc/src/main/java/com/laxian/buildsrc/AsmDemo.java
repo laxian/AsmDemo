@@ -20,14 +20,14 @@ public class AsmDemo implements Opcodes {
         MethodVisitor mv;
         AnnotationVisitor av0;
 
-        cw.visit(V1_7, ACC_PUBLIC + ACC_SUPER, "com/laxian/zwxdemo/ui/main/MainFragment", null, "androidx/fragment/app/Fragment", null);
+        cw.visit(V1_7, ACC_PUBLIC + ACC_SUPER, "com/laxian/asmdemo/ui/main/MainFragment", null, "androidx/fragment/app/Fragment", null);
 
         cw.visitSource("MainFragment.java", null);
 
-        cw.visitInnerClass("com/laxian/zwxdemo/R$layout", "com/laxian/zwxdemo/R", "layout", ACC_PUBLIC + ACC_FINAL + ACC_STATIC);
+        cw.visitInnerClass("com/laxian/asmdemo/R$layout", "com/laxian/asmdemo/R", "layout", ACC_PUBLIC + ACC_FINAL + ACC_STATIC);
 
         {
-            fv = cw.visitField(ACC_PRIVATE, "mViewModel", "Lcom/laxian/zwxdemo/ui/main/MainViewModel;", null, null);
+            fv = cw.visitField(ACC_PRIVATE, "mViewModel", "Lcom/laxian/asmdemo/ui/main/MainViewModel;", null, null);
             fv.visitEnd();
         }
         {
@@ -41,19 +41,19 @@ public class AsmDemo implements Opcodes {
             mv.visitInsn(RETURN);
             Label l1 = new Label();
             mv.visitLabel(l1);
-            mv.visitLocalVariable("this", "Lcom/laxian/zwxdemo/ui/main/MainFragment;", null, l0, l1, 0);
+            mv.visitLocalVariable("this", "Lcom/laxian/asmdemo/ui/main/MainFragment;", null, l0, l1, 0);
             mv.visitMaxs(1, 1);
             mv.visitEnd();
         }
         {
-            mv = cw.visitMethod(ACC_PUBLIC + ACC_STATIC, "newInstance", "()Lcom/laxian/zwxdemo/ui/main/MainFragment;", null, null);
+            mv = cw.visitMethod(ACC_PUBLIC + ACC_STATIC, "newInstance", "()Lcom/laxian/asmdemo/ui/main/MainFragment;", null, null);
             mv.visitCode();
             Label l0 = new Label();
             mv.visitLabel(l0);
             mv.visitLineNumber(23, l0);
-            mv.visitTypeInsn(NEW, "com/laxian/zwxdemo/ui/main/MainFragment");
+            mv.visitTypeInsn(NEW, "com/laxian/asmdemo/ui/main/MainFragment");
             mv.visitInsn(DUP);
-            mv.visitMethodInsn(INVOKESPECIAL, "com/laxian/zwxdemo/ui/main/MainFragment", "<init>", "()V", false);
+            mv.visitMethodInsn(INVOKESPECIAL, "com/laxian/asmdemo/ui/main/MainFragment", "<init>", "()V", false);
             mv.visitInsn(ARETURN);
             mv.visitMaxs(2, 0);
             mv.visitEnd();
@@ -88,7 +88,7 @@ public class AsmDemo implements Opcodes {
             mv.visitInsn(ARETURN);
             Label l1 = new Label();
             mv.visitLabel(l1);
-            mv.visitLocalVariable("this", "Lcom/laxian/zwxdemo/ui/main/MainFragment;", null, l0, l1, 0);
+            mv.visitLocalVariable("this", "Lcom/laxian/asmdemo/ui/main/MainFragment;", null, l0, l1, 0);
             mv.visitLocalVariable("inflater", "Landroid/view/LayoutInflater;", null, l0, l1, 1);
             mv.visitLocalVariable("container", "Landroid/view/ViewGroup;", null, l0, l1, 2);
             mv.visitLocalVariable("savedInstanceState", "Landroid/os/Bundle;", null, l0, l1, 3);
@@ -114,17 +114,17 @@ public class AsmDemo implements Opcodes {
             mv.visitVarInsn(ALOAD, 0);
             mv.visitVarInsn(ALOAD, 0);
             mv.visitMethodInsn(INVOKESTATIC, "androidx/lifecycle/ViewModelProviders", "of", "(Landroidx/fragment/app/Fragment;)Landroidx/lifecycle/ViewModelProvider;", false);
-            mv.visitLdcInsn(Type.getType("Lcom/laxian/zwxdemo/ui/main/MainViewModel;"));
+            mv.visitLdcInsn(Type.getType("Lcom/laxian/asmdemo/ui/main/MainViewModel;"));
             mv.visitMethodInsn(INVOKEVIRTUAL, "androidx/lifecycle/ViewModelProvider", "get", "(Ljava/lang/Class;)Landroidx/lifecycle/ViewModel;", false);
-            mv.visitTypeInsn(CHECKCAST, "com/laxian/zwxdemo/ui/main/MainViewModel");
-            mv.visitFieldInsn(PUTFIELD, "com/laxian/zwxdemo/ui/main/MainFragment", "mViewModel", "Lcom/laxian/zwxdemo/ui/main/MainViewModel;");
+            mv.visitTypeInsn(CHECKCAST, "com/laxian/asmdemo/ui/main/MainViewModel");
+            mv.visitFieldInsn(PUTFIELD, "com/laxian/asmdemo/ui/main/MainFragment", "mViewModel", "Lcom/laxian/asmdemo/ui/main/MainViewModel;");
             Label l2 = new Label();
             mv.visitLabel(l2);
             mv.visitLineNumber(38, l2);
             mv.visitInsn(RETURN);
             Label l3 = new Label();
             mv.visitLabel(l3);
-            mv.visitLocalVariable("this", "Lcom/laxian/zwxdemo/ui/main/MainFragment;", null, l0, l3, 0);
+            mv.visitLocalVariable("this", "Lcom/laxian/asmdemo/ui/main/MainFragment;", null, l0, l3, 0);
             mv.visitLocalVariable("savedInstanceState", "Landroid/os/Bundle;", null, l0, l3, 1);
             mv.visitMaxs(3, 2);
             mv.visitEnd();
@@ -150,7 +150,7 @@ public class AsmDemo implements Opcodes {
             mv.visitInsn(RETURN);
             Label l3 = new Label();
             mv.visitLabel(l3);
-            mv.visitLocalVariable("this", "Lcom/laxian/zwxdemo/ui/main/MainFragment;", null, l0, l3, 0);
+            mv.visitLocalVariable("this", "Lcom/laxian/asmdemo/ui/main/MainFragment;", null, l0, l3, 0);
             mv.visitMaxs(2, 1);
             mv.visitEnd();
         }

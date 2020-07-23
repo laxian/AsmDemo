@@ -1,4 +1,4 @@
-package com.laxian.zwxdemo.ui.main;
+package com.laxian.asmdemo.ui.main;
 
 import androidx.lifecycle.ViewModelProviders;
 
@@ -13,7 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.laxian.zwxdemo.R;
+import com.laxian.asmdemo.R;
 
 public class MainFragment extends Fragment {
 
@@ -47,5 +47,10 @@ public class MainFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
+    }
+
+    @Logit(level = Log.WARN)
+    public void demo(int first, String name, Object what) {
+
     }
 }

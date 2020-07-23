@@ -1,10 +1,10 @@
-package com.laxian.zwxdemo;
+package com.laxian.asmdemo;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-import com.laxian.zwxdemo.ui.main.MainFragment;
+import com.laxian.asmdemo.ui.main.MainFragment;
 
 public class MainActivity extends AppCompatActivity {
 
