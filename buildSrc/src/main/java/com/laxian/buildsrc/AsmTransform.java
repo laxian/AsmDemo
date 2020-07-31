@@ -65,7 +65,7 @@ class AsmTransform extends Transform {
                 }
             });
 
-            input.getJarInputs().forEach(jarInput ->{
+            input.getJarInputs().forEach(jarInput -> {
                 String jarName = jarInput.getName();
                 String md5Name = DigestUtils.md5Hex(jarInput.getFile().getAbsolutePath());
                 if (jarName.endsWith(".jar")) {
@@ -106,6 +106,21 @@ class AsmTransform extends Transform {
                 fos.write(code);
                 fos.close();
             } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else if (f.getPath().contains("Java8")) {
+            ClassReader reader = null;
+            try {
+                reader = new ClassReader(new FileInputStream(f));
+                ClassWriter writer = new ClassWriter(reader, ClassWriter.COMPUTE_MAXS);
+                ClassVisitor visitor = new AsmClassVisitor(writer);
+                CustomClassVisitor customClassNode = new CustomClassVisitor(visitor);
+                reader.accept(customClassNode, ClassReader.EXPAND_FRAMES);
+                byte[] code = writer.toByteArray();
+                FileOutputStream fos = new FileOutputStream(f.getAbsolutePath());
+                fos.write(code);
+                fos.close();
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
